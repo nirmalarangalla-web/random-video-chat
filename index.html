@@ -30,7 +30,7 @@
 <footer>Random Video Chat · WebRTC · Android Chrome සඳහා</footer>
 </main>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script>
+<script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 (() => {
  const $=id=>document.getElementById(id); let app=null,db=null,uid=null,stream=null,pc=null,partner=null,room=null,queueRef=null,roomRef=null,queueListener=null,roomListener=null,iceLocalRef=null,iceRemoteRef=null,iceLocalListener=null,iceRemoteListener=null,connecting=false,closed=false,config=null,remoteDescSet=false;
  const setStatus=(s,kind='wait')=>{$('statusText').textContent=s;$('dot').style.background=kind==='ok'?'#22c55e':kind==='bad'?'#ef4444':'#f59e0b'};
