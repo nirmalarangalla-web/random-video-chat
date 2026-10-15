@@ -1,60 +1,102 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="si">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827"><title>Random Video Chat</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Video Chat</title>
+
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--panel:#151d31;--panel2:#202a42;--text:#f7f8fc;--muted:#aab4ca;--line:#34415e;--accent:#8b5cf6;--green:#16a34a;--red:#ef4444}*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#111827,#0b1020 65%);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);min-height:100vh}.wrap{max-width:760px;margin:auto;padding:18px 14px 32px}.top{text-align:center;padding:12px 0 18px}.logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:grid;place-items:center;margin:0 auto 10px;font-size:27px}.top h1{font-size:26px;margin:0 0 5px}.top p{margin:0;color:var(--muted);font-size:14px}.status{margin:0 0 14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#151d31;font-size:14px;display:flex;gap:9px;align-items:center}.dot{width:9px;height:9px;border-radius:50%;background:#f59e0b;flex:none}.videos{display:grid;grid-template-columns:1fr 1fr;gap:10px}.video-card{position:relative;background:#050811;border:1px solid var(--line);border-radius:17px;overflow:hidden;aspect-ratio:3/4;min-height:190px}.video-card video{width:100%;height:100%;object-fit:cover;display:block}.video-label{position:absolute;left:10px;bottom:10px;background:#0009;padding:6px 9px;border-radius:9px;font-size:12px}.placeholder{position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;color:#9ca8c2;font-size:13px;text-align:center;padding:12px}.placeholder span{font-size:35px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.btn{border:0;border-radius:13px;padding:14px 12px;font-size:15px;font-weight:700;color:white;background:var(--accent);cursor:pointer;min-height:49px}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:var(--panel2);border:1px solid var(--line)}.btn.stop{background:#b91c1c}.small-controls{display:flex;gap:9px}.small-controls .btn{flex:1;font-size:13px;padding:11px 8px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin:13px 2px}.settings{margin-top:18px;border:1px solid var(--line);border-radius:15px;background:#11182a;overflow:hidden}.settings summary{padding:14px;font-weight:700;cursor:pointer}.settings-inner{padding:0 14px 14px}.settings p{font-size:13px;color:var(--muted);line-height:1.55}.settings label{display:block;font-size:13px;margin:12px 0 5px}.settings input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#080d19;color:white;font-size:14px}.settings .btn{width:100%;margin-top:12px}.warning{border:1px solid #725b28;background:#332812;color:#ffdf9a;padding:11px;border-radius:12px;font-size:12px;line-height:1.5;margin-top:12px}footer{text-align:center;color:#7e8aa4;font-size:11px;margin-top:20px}@media(min-width:600px){.video-card{aspect-ratio:4/3;min-height:280px}.top h1{font-size:30px}}
+body {
+  margin: 0;
+  padding: 15px;
+  background: #101827;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+h2 {
+  color: #a78bfa;
+}
+
+video {
+  width: 46%;
+  height: 230px;
+  background: black;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+button {
+  padding: 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 9px;
+  background: #8b5cf6;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+input {
+  display: block;
+  width: 95%;
+  padding: 10px;
+  margin: 8px auto;
+  background: #202a3c;
+  color: white;
+  border: 1px solid #526079;
+  border-radius: 8px;
+}
+
+#status {
+  padding: 12px;
+  background: #202a3c;
+  border-radius: 10px;
+}
 </style>
 </head>
-<body><main class="wrap">
-<header class="top"><div class="logo">🎥</div><h1>Random Video Chat</h1><p>අහඹු පුද්ගලයෙකු සමඟ වීඩියෝ කතාබහක්</p></header>
-<div class="status" role="status"><span class="dot" id="dot"></span><span id="statusText">මුලින් Firebase සැකසුම අවශ්‍යයි.</span></div>
-<section class="videos">
-<div class="video-card"><video id="localVideo" autoplay playsinline muted></video><div class="placeholder" id="localPlaceholder"><span>🤳</span><b>ඔයාගේ කැමරාව</b><small>Start ඔබන්න</small></div><div class="video-label">ඔයා</div></div>
-<div class="video-card"><video id="remoteVideo" autoplay playsinline></video><div class="placeholder" id="remotePlaceholder"><span>👤</span><b>අනෙක් පුද්ගලයා</b><small>තවම සම්බන්ධ වී නැහැ</small></div><div class="video-label">අනෙක් පුද්ගලයා</div></div>
-</section>
-<div class="controls"><button class="btn" id="startBtn">📹 Start / Match</button><button class="btn secondary" id="nextBtn" disabled>⏭ Next</button></div>
-<div class="small-controls"><button class="btn secondary" id="micBtn" disabled>🎙️ Mic Off</button><button class="btn secondary" id="camBtn" disabled>📷 Camera Off</button><button class="btn stop" id="stopBtn" disabled>✕ Stop</button></div>
-<p class="note">ආරක්ෂාව: පුද්ගලික තොරතුරු බෙදා නොගන්න. අසහනකාරී හැසිරීමක් දුටුවොත් වහාම Stop කරන්න. කැමරාව/මයික්‍රෆෝනය භාවිතයට browser අවසරය අවශ්‍යයි.</p>
-<details class="settings" open><summary>⚙️ මුල් සැකසුම — Firebase</summary><div class="settings-inner">
-<p>මෙම App එකට random matching queue එකක් සඳහා Firebase Realtime Database අවශ්‍යයි. Firebase Console එකෙන් Web App එකක් සාදා ලැබෙන config අගයන් පහත දමන්න. API key එක පමණක් රහසක් නොවුණත් Database Rules නිවැරදිව සකසන්න.</p>
-<label for="apiKey">apiKey</label><input id="apiKey" autocomplete="off" placeholder="AIza...">
-<label for="authDomain">authDomain</label><input id="authDomain" autocomplete="off" placeholder="your-project.firebaseapp.com">
-<label for="databaseURL">databaseURL</label><input id="databaseURL" autocomplete="off" placeholder="https://your-project-default-rtdb.firebaseio.com">
-<label for="projectId">projectId</label><input id="projectId" autocomplete="off" placeholder="your-project-id">
-<label for="appId">appId</label><input id="appId" autocomplete="off" placeholder="1:...:web:...">
-<button class="btn" id="saveConfigBtn">Save settings & connect</button>
-<div class="warning">මෙය ආරම්භක අනුවාදයකි. Firebase config සහ Realtime Database rules සැකසූ පසු පමණක් matching ක්‍රියා කරයි. Firebase rules සියල්ලන්ටම ලිවීමට/කියවීමට විවෘත නොකරන්න; production භාවිතයට Authentication සහ ආරක්ෂිත rules අවශ්‍යයි.</div>
-</div></details>
-<footer>Random Video Chat · WebRTC · Android Chrome සඳහා</footer>
-</main>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-(() => {
- const $=id=>document.getElementById(id); let app=null,db=null,uid=null,stream=null,pc=null,partner=null,room=null,queueRef=null,roomRef=null,queueListener=null,roomListener=null,iceLocalRef=null,iceRemoteRef=null,iceLocalListener=null,iceRemoteListener=null,connecting=false,closed=false,config=null,remoteDescSet=false;
- const setStatus=(s,kind='wait')=>{$('statusText').textContent=s;$('dot').style.background=kind==='ok'?'#22c55e':kind==='bad'?'#ef4444':'#f59e0b'};
- const toggle=(id,enabled)=>$(id).disabled=!enabled;
- function readConfig(){return {apiKey:$('apiKey').value.trim(),authDomain:$('authDomain').value.trim(),databaseURL:$('databaseURL').value.trim(),projectId:$('projectId').value.trim(),appId:$('appId').value.trim()}}
- function valid(c){return c.apiKey&&c.authDomain&&c.databaseURL&&c.projectId&&c.appId}
- function saveLocal(c){try{localStorage.setItem('rvchat_firebase_config',JSON.stringify(c))}catch(e){}}
- function loadLocal(){try{const c=JSON.parse(localStorage.getItem('rvchat_firebase_config')||'null');if(c)Object.keys(c).forEach(k=>{if($(k))$(k).value=c[k]})}catch(e){}}
- async function connectFirebase(){config=readConfig();if(!valid(config)){setStatus('Firebase config අගයන් සියල්ල පුරවන්න.','bad');return false}try{if(!app){app=firebase.initializeApp(config);db=firebase.database();}else if(!db){db=firebase.database()}uid=uid||('u_'+Math.random().toString(36).slice(2)+Date.now().toString(36));saveLocal(config);setStatus('Firebase සම්බන්ධයි. Start / Match ඔබන්න.','ok');return true}catch(e){setStatus('Firebase සම්බන්ධ වුණේ නැහැ: '+e.message,'bad');return false}}
- async function start(){if(!db){if(!await connectFirebase())return}if(!window.isSecureContext){setStatus('HTTPS වෙබ් ලිපිනයකින් විවෘත කරන්න.','bad');return}try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:true});$('localVideo').srcObject=stream;$('localPlaceholder').style.display='none';toggle('micBtn',true);toggle('camBtn',true);toggle('stopBtn',true);toggle('nextBtn',true);$('startBtn').disabled=true;setStatus('අහඹු පුද්ගලයෙකු සොයමින්...');await findMatch()}catch(e){setStatus('කැමරාව/මයික්‍රෆෝනය ලබාගත නොහැක: '+e.message,'bad');stopMediaOnly()}}
- async function findMatch(){closed=false;connecting=false;partner=null;room=null;remoteDescSet=false;$('remoteVideo').srcObject=null;$('remotePlaceholder').style.display='flex';const q=db.ref('randomVideoChatQueue');const snap=await q.orderByChild('status').equalTo('waiting').limitToFirst(12).once('value');let chosen=null; snap.forEach(ch=>{if(!chosen&&ch.key!==uid&&Date.now()-(ch.val().createdAt||0)<120000)chosen={key:ch.key,ref:ch.ref,val:ch.val()}});
- if(chosen){const claim=await chosen.ref.transaction(v=>{if(v&&v.status==='waiting'&&Date.now()-(v.createdAt||0)<120000){v.status='matched';v.matchedBy=uid;v.peerUid=chosen.key;v.updatedAt=Date.now();return v}return});if(claim.committed){partner=chosen.key;room=[uid,partner].sort().join('_');queueRef=q.child(uid);await queueRef.set({status:'matched',createdAt:Date.now(),peerUid:partner,matchedBy:uid});await makeOffer();return}}
- queueRef=q.child(uid);await queueRef.set({status:'waiting',createdAt:Date.now()});queueListener=queueRef.on('value',async s=>{const v=s.val();if(!v||closed)return;if(v.status==='matched'&&v.matchedBy&&v.matchedBy!==uid&&v.peerUid===uid&&!connecting){connecting=true;partner=v.matchedBy;room=[uid,partner].sort().join('_');await joinOffer()}});setStatus('ඔයා සම්බන්ධ වීමට බලා සිටිනවා. වෙනත් කෙනෙකු App එක විවෘත කළ විට සම්බන්ධ වෙයි.');}
- function createPC(){pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]});stream.getTracks().forEach(t=>pc.addTrack(t,stream));pc.ontrack=e=>{$('remoteVideo').srcObject=e.streams[0];$('remotePlaceholder').style.display='none';setStatus('වීඩියෝ ඇමතුම සම්බන්ධයි!','ok')};pc.onconnectionstatechange=()=>{if(pc&&['failed','disconnected'].includes(pc.connectionState))setStatus('සම්බන්ධතාව බිඳ වැටුණා. Next ඔබන්න.','bad')};return pc}
- function addIceListeners(){iceLocalRef=db.ref('randomVideoChatCalls/'+room+'/ice/'+uid);iceRemoteRef=db.ref('randomVideoChatCalls/'+room+'/ice/'+partner);pc.onicecandidate=e=>{if(e.candidate&&iceLocalRef)iceLocalRef.push(e.candidate.toJSON())};iceRemoteListener=iceRemoteRef.on('child_added',async s=>{if(!pc||!s.val())return;try{await pc.addIceCandidate(new RTCIceCandidate(s.val()))}catch(e){console.warn('ICE candidate',e)}})}
- async function makeOffer(){if(closed)return;createPC();roomRef=db.ref('randomVideoChatCalls/'+room);await roomRef.set({caller:uid,callee:partner,createdAt:Date.now(),offer:null,answer:null});addIceListeners();const offer=await pc.createOffer();await pc.setLocalDescription(offer);await roomRef.child('offer').set({type:offer.type,sdp:offer.sdp});roomListener=roomRef.child('answer').on('value',async s=>{if(s.val()&&pc&&!pc.currentRemoteDescription){await pc.setRemoteDescription(new RTCSessionDescription(s.val()));remoteDescSet=true;setStatus('අනෙක් පුද්ගලයා සම්බන්ධ වෙමින්...')}});setStatus('අනෙක් පුද්ගලයා සම්බන්ධ වන තුරු බලා සිටිනවා...')}
- async function joinOffer(){if(closed)return;createPC();roomRef=db.ref('randomVideoChatCalls/'+room);addIceListeners();roomListener=roomRef.child('offer').on('value',async s=>{if(!s.val()||!pc||pc.currentRemoteDescription)return;try{await pc.setRemoteDescription(new RTCSessionDescription(s.val()));const ans=await pc.createAnswer();await pc.setLocalDescription(ans);await roomRef.child('answer').set({type:ans.type,sdp:ans.sdp});setStatus('වීඩියෝ ඇමතුම සම්බන්ධ කරමින්...')}catch(e){setStatus('Call එක සකස් කළ නොහැක: '+e.message,'bad')}})}
- async function cleanup(){closed=true;connecting=false;try{if(queueRef&&queueListener)queueRef.off('value',queueListener)}catch(e){}try{if(roomRef&&roomListener)roomRef.child('answer').off('value',roomListener),roomRef.child('offer').off('value',roomListener)}catch(e){}try{if(iceRemoteRef&&iceRemoteListener)iceRemoteRef.off('child_added',iceRemoteListener)}catch(e){}try{if(pc){pc.ontrack=null;pc.close()}}catch(e){}pc=null;try{if(queueRef)await queueRef.remove()}catch(e){}try{if(roomRef)await roomRef.remove()}catch(e){}queueRef=null;roomRef=null;iceLocalRef=null;iceRemoteRef=null;queueListener=null;roomListener=null;iceRemoteListener=null;partner=null;room=null;$('remoteVideo').srcObject=null;$('remotePlaceholder').style.display='flex'}
- async function next(){if(!db){setStatus('මුලින් Firebase සකසන්න.','bad');return}await cleanup();if(!stream){await start();return}setStatus('අලුත් පුද්ගලයෙකු සොයමින්...');await findMatch()}
- function stopMediaOnly(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;$('localVideo').srcObject=null;$('localPlaceholder').style.display='flex';toggle('micBtn',false);toggle('camBtn',false);toggle('stopBtn',false);toggle('nextBtn',false);$('startBtn').disabled=false}
- async function stop(){await cleanup();stopMediaOnly();setStatus('ඇමතුම නතර කළා. නැවත Start ඔබන්න.');}
- $('saveConfigBtn').addEventListener('click',connectFirebase);$('startBtn').addEventListener('click',start);$('nextBtn').addEventListener('click',next);$('stopBtn').addEventListener('click',stop);
- $('micBtn').addEventListener('click',()=>{if(!stream)return;const t=stream.getAudioTracks()[0];if(t){t.enabled=!t.enabled;$('micBtn').textContent=t.enabled?'🎙️ Mic Off':'🎙️ Mic On'}});
- $('camBtn').addEventListener('click',()=>{if(!stream)return;const t=stream.getVideoTracks()[0];if(t){t.enabled=!t.enabled;$('camBtn').textContent=t.enabled?'📷 Camera Off':'📷 Camera On'}});
- loadLocal();
-})();
-</script></body></html>
+
+<body>
+
+<h2>🎥 Random Video Chat</h2>
+
+<p id="status">Firebase සැකසුම කරන්න.</p>
+
+<div>
+  <video id="localVideo"
+    autoplay playsinline muted></video>
+
+  <video id="remoteVideo"
+    autoplay playsinline></video>
+</div>
+
+<p>ඔයාගේ කැමරාව | අනෙක් පුද්ගලයා</p>
+
+<h3>Firebase Settings</h3>
+
+<input id="apiKey" placeholder="Firebase API Key">
+<input id="authDomain" placeholder="authDomain">
+<input id="databaseURL" placeholder="databaseURL">
+<input id="projectId" placeholder="projectId">
+<input id="appId" placeholder="appId">
+
+<button id="saveBtn">Save & Connect</button>
+
+<br>
+
+<button id="startBtn">📹 Start / Match</button>
+<button id="nextBtn" disabled>⏭ Next</button>
+<button id="stopBtn" disabled>✖ Stop</button>
+
+<br>
+
+<button id="micBtn" disabled>🎙 Mic Off</button>
+<button id="camBtn" disabled>📷 Camera Off</button>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
